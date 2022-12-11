@@ -1,0 +1,138 @@
+import React from "react";
+import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import { Header } from "~/components/Header";
+import { MoviesCredits } from "~/movies/movies-credits";
+import MoviesTrailer from "~/movies/movies-trailer/MoviesTrailer";
+import { Heading } from "~/components/Heading";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getMoviesDetails } from "~/Store/movies/movies-silce";
+import { MoviesSimilar } from "~/movies/movies-similar";
+const DetailsPage = styled.div`
+  padding: 0 20px;
+  flex: 1;
+  margin-right: 400px;
+  .movies-details {
+    margin-top: 50px;
+    &__banner {
+      width: 100%;
+      max-height: 400px;
+      background-image: url("");
+      position: relative;
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+      }
+      .banner-child {
+        position: absolute;
+        width: 500px;
+        height: 300px;
+        z-index: 10;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -25%;
+      }
+    }
+    &__title {
+      padding: 120px 20px 20px 20px;
+      text-align: center;
+      font-size: 20px;
+      color: ${(props) => props.theme.color.white};
+    }
+    &__geners {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      gap: 20px;
+      .geners-item {
+        padding: 8px 18px;
+        background: transparent;
+        border: 2px solid ${(props) => props.theme.color.white};
+        color: ${(props) => props.theme.color.white};
+        border-radius: 10px;
+        font-size: 18px;
+      }
+    }
+    &__des {
+      padding: 30px;
+      text-align: center;
+      color: ${(props) => props.theme.color.white};
+      p::first-letter {
+        font-size: 200%;
+      }
+      p {
+        line-height: 40px;
+        font-size: 15px;
+      }
+    }
+    &__heading {
+      font-size: 40px;
+      text-align: center;
+      padding: 50px 0;
+      color: ${(props) => props.theme.color.white};
+    }
+  }
+`;
+const MoviesDetailPage = (props) => {
+  const moviesId = useParams();
+  console.log(moviesId.id);
+  const dispatch = useDispatch();
+  const movies = useSelector((state) => state.movies);
+  const genres = movies?.movies_Details?.genres;
+  useEffect(() => {
+    dispatch(getMoviesDetails({ id: moviesId.id }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (!genres) return;
+  return (
+    <DetailsPage>
+      <Header />
+      <div className="movies-details">
+        <div className="movies-details__banner">
+          <img
+            className="banner-item"
+            src={`https://image.tmdb.org/t/p/w500/${movies?.movies_Details?.backdrop_path}`}
+            alt="banner"
+          />
+          <img
+            className="banner-child"
+            src={`https://image.tmdb.org/t/p/w500/${movies?.movies_Details?.poster_path}`}
+            alt="banner"
+          />
+          <div className="overlay"></div>
+        </div>
+        <div className="movies-details__title">
+          <h3>{movies?.movies_Details?.original_title} </h3>
+        </div>
+        <div className="movies-details__geners">
+          {genres.length > 0 &&
+            genres.map((item) => {
+              return (
+                <span key={item.id} className="geners-item">
+                  {item.name}
+                </span>
+              );
+            })}
+        </div>
+        <div className="movies-details__des">
+          <p>{movies?.movies_Details?.overview}</p>
+        </div>
+        <h3 className="movies-details__heading">Casts</h3>
+        <MoviesCredits />
+        <h3 className="movies-details__heading">Trailer</h3>
+        <MoviesTrailer />
+        <Heading name="Movies Similar" />
+        <MoviesSimilar />
+      </div>
+    </DetailsPage>
+  );
+};
+
+MoviesDetailPage.propTypes = {};
+
+export default MoviesDetailPage;
