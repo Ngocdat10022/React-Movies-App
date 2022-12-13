@@ -8,6 +8,7 @@ import {
   handleGetMoviesCredits,
   handleGetMoviesTrailer,
   handleGetMoviesSimilar,
+  handleGetMoviesPopular,
 } from "./movies-handler";
 import {
   getMovies,
@@ -18,6 +19,7 @@ import {
   getMoviesCredits,
   getMoviesTrailer,
   getMoviesSimilar,
+  getMoviesPopular,
 } from "./movies-silce";
 
 export default function* moviesSaga() {
@@ -29,4 +31,5 @@ export default function* moviesSaga() {
   yield takeEvery(getMoviesCredits.type, handleGetMoviesCredits);
   yield takeEvery(getMoviesTrailer.type, handleGetMoviesTrailer);
   yield takeEvery(getMoviesSimilar.type, handleGetMoviesSimilar);
+  yield takeEvery(getMoviesPopular.type, handleGetMoviesPopular);
 }

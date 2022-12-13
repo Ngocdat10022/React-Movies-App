@@ -9,3 +9,5 @@ export { default as MoviesIcon } from "./MoviesIcon";
 export { default as SettingIcon } from "./SettingIcon";
 export { default as LogoutIcon } from "./LogoutIcon";
 export { default as SearchIcon } from "./SearchIcon";
+export { default as PrevIcon } from "./PrevIcon";
+export { default as NextIcon } from "./NextIcon";

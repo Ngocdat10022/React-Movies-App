@@ -17,6 +17,8 @@ import {
   getMoviesDetailsSuccess,
   getMoviesTrailerSuccess,
   getMoviesSimilarSuccess,
+  getMoviesPopularSuccess,
+  getTotalPage,
 } from "./movies-silce";
 const sleep = (time) => {
   return new Promise((resolve) => {
@@ -26,32 +28,53 @@ const sleep = (time) => {
 function* handleGetMoviesUpComing(action) {
   const { payload } = action;
   console.log(payload.type);
-  const res = yield call(requestMovies, payload.type);
+  const res = yield call(requestMovies, { type: payload.type });
   const data = res.data.results;
   yield put(getUpCommingSuccess({ data: data }));
 }
 function* handleGetMoviesNowPlaying(action) {
-  const { payload } = action;
+  const payload = action.payload;
   console.log(payload.type);
-  const res = yield call(requestMovies, payload.type);
+  const res = yield call(requestMovies, {
+    type: payload.type,
+    page: payload.page,
+  });
+  yield put(setLoading(true));
   const data = res.data.results;
-  yield put(getMoviesNowPlayingSuccess({ data: data }));
+  const totalPage = res.data.total_pages;
+  yield sleep(2000);
+  if (!!data) {
+    yield put(getMoviesNowPlayingSuccess({ data: data }));
+    yield put(getTotalPage({ totalPage: totalPage }));
+    yield put(setLoading(false));
+  }
 }
 function* handleGetMoviesTopRated(action) {
   const { payload } = action;
   console.log(payload.type);
-  const res = yield call(requestMovies, payload.type);
+  const res = yield call(requestMovies, { type: payload.type });
   const data = res.data.results;
   yield put(getMoviesTopRatedSuccess({ data: data }));
 }
-function* handleSearchMovies(action) {
+function* handleGetMoviesPopular(action) {
   const { payload } = action;
-  const res = yield call(requestSearchMovies, payload.query);
+  console.log(payload.type);
+  const res = yield call(requestMovies, { type: payload.type });
+  const data = res.data.results;
+  yield put(getMoviesPopularSuccess({ data: data }));
+}
+function* handleSearchMovies(action) {
+  const { query, page } = action.payload;
+  const res = yield call(requestSearchMovies, { query: query, page: page });
   console.log("responed", res);
   yield put(setLoading(true));
+  const totalPage = res.data.total_pages;
   const data = res.data.results;
   yield sleep(2000);
-  if (!!data) yield put(getMoviesSearchSuccess({ data: data }));
+  if (!!data) {
+    yield put(getMoviesSearchSuccess({ data: data }));
+    yield put(getTotalPage({ totalPage: totalPage }));
+  }
   yield put(setLoading(false));
 }
 function* handleGetMoviesDetails(action) {
@@ -89,4 +112,5 @@ export {
   handleGetMoviesCredits,
   handleGetMoviesTrailer,
   handleGetMoviesSimilar,
+  handleGetMoviesPopular,
 };

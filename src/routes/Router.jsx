@@ -1,10 +1,10 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import { Layout } from "~/layouts";
 import { LoginPage, ResgiterPage } from "~/pages";
 const HomePage = lazy(() => import("~/pages/HomePage"));
 const MoviesDetailPage = lazy(() => import("~/pages/MoviesDetailPage"));
 const MoviesPage = lazy(() => import("~/pages/MoviesPage"));
+const Layout = lazy(() => import("~/layouts/Layout"));
 const Router = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>

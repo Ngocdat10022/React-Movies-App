@@ -26,7 +26,7 @@ const MoviesSimilar = ({ type }) => {
     <MoiesListWrapper>
       {movies.movies_Similar.length > 0 &&
         movies.movies_Similar.map((item) => {
-          return <MoviesCard data={item} />;
+          return <MoviesCard key={item.id} data={item} />;
         })}
     </MoiesListWrapper>
   );

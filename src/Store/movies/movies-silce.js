@@ -8,8 +8,10 @@ const initialState = {
   movies_Credits: [],
   video_Trailer: [],
   movies_Similar: [],
+  movies_Popular: [],
   loading: true,
-  querySearch: "",
+  querySearch: "batman",
+  total_page: 1,
 };
 const moviesSlice = createSlice({
   name: "movies",
@@ -95,6 +97,21 @@ const moviesSlice = createSlice({
         movies_Similar: payload.data,
       };
     },
+    getMoviesPopular: (state, action) => {},
+    getMoviesPopularSuccess: (state, action) => {
+      const { payload } = action;
+      return {
+        ...state,
+        movies_Popular: payload.data,
+      };
+    },
+    getTotalPage: (state, action) => {
+      const { payload } = action;
+      return {
+        ...state,
+        total_page: payload.totalPage,
+      };
+    },
   },
 });
 export const {
@@ -116,5 +133,8 @@ export const {
   getMoviesTrailerSuccess,
   getMoviesSimilar,
   getMoviesSimilarSuccess,
+  getMoviesPopular,
+  getMoviesPopularSuccess,
+  getTotalPage,
 } = moviesSlice.actions;
 export default moviesSlice.reducer;

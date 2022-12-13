@@ -22,25 +22,25 @@ export const LIST_NAV_ONE = [
     id: 1,
     name: "Commuity",
     icon: <UserGroupIcon />,
-    to: "/",
+    to: "/movies",
   },
   {
     id: 2,
     name: "Discover",
     icon: <UserGroupIcon />,
-    to: "/",
+    to: "/discover",
   },
   {
     id: 3,
     name: "Awards",
     icon: <UserGroupIcon />,
-    to: "/",
+    to: "/awards",
   },
   {
     id: 4,
     name: "Celebs",
     icon: <UserIcon />,
-    to: "/",
+    to: "/celebs",
   },
 ];
 

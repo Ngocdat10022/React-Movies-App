@@ -18,22 +18,24 @@ const DetailsPage = styled.div`
     margin-top: 50px;
     &__banner {
       width: 100%;
-      max-height: 400px;
-      background-image: url("");
-      position: relative;
-      .overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.7);
+      .banner-item {
+        position: relative;
+        .overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.7);
+          z-index: 1;
+        }
       }
       .banner-child {
-        position: absolute;
         width: 500px;
-        height: 300px;
-        z-index: 10;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: -25%;
+        position: relative;
+        margin: -150px auto 0px auto;
+        z-index: 100;
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
     &__title {
@@ -94,17 +96,20 @@ const MoviesDetailPage = (props) => {
       <Header />
       <div className="movies-details">
         <div className="movies-details__banner">
-          <img
-            className="banner-item"
-            src={`https://image.tmdb.org/t/p/w500/${movies?.movies_Details?.backdrop_path}`}
-            alt="banner"
-          />
-          <img
-            className="banner-child"
-            src={`https://image.tmdb.org/t/p/w500/${movies?.movies_Details?.poster_path}`}
-            alt="banner"
-          />
-          <div className="overlay"></div>
+          <div className="banner-item">
+            <div className="overlay"></div>
+            <img
+              className="banner-item"
+              src={`https://image.tmdb.org/t/p/w500/${movies?.movies_Details?.backdrop_path}`}
+              alt="banner"
+            />
+          </div>
+          <div className="banner-child">
+            <img
+              src={`https://image.tmdb.org/t/p/w500/${movies?.movies_Details?.poster_path}`}
+              alt="banner"
+            />
+          </div>
         </div>
         <div className="movies-details__title">
           <h3>{movies?.movies_Details?.original_title} </h3>

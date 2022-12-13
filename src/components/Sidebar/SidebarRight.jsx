@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { SearchIcon, StarIcon } from "~/assets/icons";
@@ -7,6 +7,13 @@ import { Button } from "~/components/Button";
 import TagList from "~/components/Tag/TagList";
 import Tag from "~/components/Tag/Tag";
 import { TitleCard } from "../TitleCard";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getMoviesPopular,
+  getMoviesTopRated,
+} from "~/Store/movies/movies-silce";
+import { useNavigate } from "react-router-dom";
+import { setIndex } from "~/constant/GlobalFunc";
 const WrappersidebarRight = styled.div`
   background-color: ${(props) => props.theme.color.sidebarColor};
   width: ${(props) => props.theme.width.sideBarright};
@@ -59,6 +66,23 @@ const WrappersidebarRight = styled.div`
       display: flex;
       flex-direction: column;
       gap: 10px;
+      height: 400px;
+      overflow-y: scroll;
+      margin-bottom: 20px;
+      /* border-radius: 10px; */
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track {
+        background: ${(props) => props.theme.color.sidebarColor};
+      }
+      &::-webkit-scrollbar-thumb {
+        background: ${(props) => props.theme.color.primary};
+        border-radius: 5px;
+      }
+      &::-webkit-scrollbar-button {
+        background: ${(props) => props.theme.color.sidebarColor};
+      }
       .card {
         width: 100%;
         height: auto;
@@ -68,6 +92,7 @@ const WrappersidebarRight = styled.div`
         align-items: center;
         gap: 10px;
         padding: 10px;
+        cursor: pointer;
         &__img {
           width: 30%;
           img {
@@ -82,7 +107,6 @@ const WrappersidebarRight = styled.div`
           justify-content: space-between;
           gap: 10px;
           width: 70%;
-          height: 100%;
         }
         &__star {
           display: flex;
@@ -101,6 +125,27 @@ const WrappersidebarRight = styled.div`
   }
 `;
 const SidebarRight = (props) => {
+  const navigate = useNavigate();
+  const movies = useSelector((state) => state.movies);
+  const { index: indexPopular, handleSetIndex: handleSetIndexPopular } =
+    setIndex();
+  const { index: indexTopReted, handleSetIndex: handleSetIndexTopReted } =
+    setIndex();
+  const dataPopular = movies.movies_Popular;
+  const dataTopReted = movies.movies_Top_Rated;
+  const dataSlice = {
+    dataPopularSlice: dataPopular.slice(0, indexPopular),
+    dataTopRetedSlice: dataTopReted.slice(0, indexTopReted),
+  };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getMoviesPopular({ type: "popular" }));
+    if (dataTopReted.length <= 0) {
+      dispatch(getMoviesTopRated({ type: "top_rated" }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <WrappersidebarRight>
       <div className="wrapper-input">
@@ -110,99 +155,100 @@ const SidebarRight = (props) => {
       <div className="sidebar-content">
         <Heading name="Poppular Movies" />
         <div className="siderbar-content_card">
-          <div className="card">
-            <div className="card__img">
-              <img
-                src="https://tse1.mm.bing.net/th?id=OIP.WnAMMuI8YKDz5UxkdoM05QHaKI&pid=Api&P=0"
-                alt="spiderman"
-              />
-            </div>
-            <div className="card__content">
-              <TitleCard children="Spiderman" />
-              <div className="card__star">
-                <span>2021</span>
-                <span
-                  style={{ display: "flex", alignItems: "center", gap: "5px" }}
+          {dataSlice.dataPopularSlice.length > 0 &&
+            dataSlice.dataPopularSlice.map((item) => {
+              return (
+                <div
+                  className="card"
+                  key={item.id}
+                  onClick={() => {
+                    navigate(`/movies-details/${item.id}`);
+                  }}
                 >
-                  6.1 <StarIcon className="color" />
-                </span>
-              </div>
-              <TagList></TagList>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card__img">
-              <img
-                src="https://tse1.mm.bing.net/th?id=OIP.WnAMMuI8YKDz5UxkdoM05QHaKI&pid=Api&P=0"
-                alt="spiderman"
-              />
-            </div>
-            <div className="card__content">
-              <TitleCard children="Spiderman" />
-              <div className="card__star">
-                <span>2021</span>
-                <span
-                  style={{ display: "flex", alignItems: "center", gap: "5px" }}
-                >
-                  6.1 <StarIcon className="color" />
-                </span>
-              </div>
-              <TagList></TagList>
-            </div>
-          </div>
-          <Button children="See more" isBold={false} />
+                  <div className="card__img">
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500/${item?.poster_path}`}
+                      alt="spiderman"
+                    />
+                  </div>
+                  <div className="card__content">
+                    <TitleCard children={item?.title} />
+                    <div className="card__star">
+                      <span>{item?.release_date}</span>
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
+                        }}
+                      >
+                        {item?.vote_average} <StarIcon className="color" />
+                      </span>
+                    </div>
+                    <TagList></TagList>
+                  </div>
+                </div>
+              );
+            })}
         </div>
+        <Button
+          children="See more"
+          isBold={false}
+          onClick={() => {
+            handleSetIndexPopular(dataSlice.dataPopularSlice.length);
+          }}
+        />
       </div>
       <div className="sidebar-content">
-        <Heading name="Poppular Movies" />
+        <Heading name=" Movies" />
         <div className="siderbar-content_card">
-          <div className="card">
-            <div className="card__img">
-              <img
-                src="https://tse1.mm.bing.net/th?id=OIP.WnAMMuI8YKDz5UxkdoM05QHaKI&pid=Api&P=0"
-                alt="spiderman"
-              />
-            </div>
-            <div className="card__content">
-              <TitleCard children="Spiderman" />
-              <div className="card__star">
-                <span>2021</span>
-                <span
-                  style={{ display: "flex", alignItems: "center", gap: "5px" }}
+          {dataSlice.dataTopRetedSlice.length > 0 &&
+            dataSlice.dataTopRetedSlice.map((item) => {
+              return (
+                <div
+                  className="card"
+                  key={item.id}
+                  onClick={() => {
+                    navigate(`/movies-details/${item.id}`);
+                  }}
                 >
-                  6.1 <StarIcon className="color" />
-                </span>
-              </div>
-              <TagList></TagList>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card__img">
-              <img
-                src="https://tse1.mm.bing.net/th?id=OIP.WnAMMuI8YKDz5UxkdoM05QHaKI&pid=Api&P=0"
-                alt="spiderman"
-              />
-            </div>
-            <div className="card__content">
-              <TitleCard children="Spiderman" />
-              <div className="card__star">
-                <span>2021</span>
-                <span
-                  style={{ display: "flex", alignItems: "center", gap: "5px" }}
-                >
-                  6.1 <StarIcon className="color" />
-                </span>
-              </div>
-              <TagList></TagList>
-            </div>
-          </div>
-          <Button children="See more" isBold={false} />
+                  <div className="card__img">
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500/${item?.poster_path}`}
+                      alt="spiderman"
+                    />
+                  </div>
+                  <div className="card__content">
+                    <TitleCard children={item?.title} />
+                    <div className="card__star">
+                      <span>{item?.release_date}</span>
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
+                        }}
+                      >
+                        {item?.vote_average} <StarIcon className="color" />
+                      </span>
+                    </div>
+                    <TagList></TagList>
+                  </div>
+                </div>
+              );
+            })}
         </div>
+        <Button
+          children="See more"
+          isBold={false}
+          onClick={() => {
+            handleSetIndexTopReted(dataSlice.dataTopRetedSlice.length);
+          }}
+        />
       </div>
     </WrappersidebarRight>
   );
 };
-
 SidebarRight.propTypes = {};
 
 export default SidebarRight;

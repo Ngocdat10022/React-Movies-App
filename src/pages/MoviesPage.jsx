@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMoviesSearch, setQuerySearch } from "~/Store/movies/movies-silce";
 import { debounce } from "lodash";
 import { CartLoadingSkeleton } from "~/movies/MoviesCard";
+import { Paging } from "~/components/Paging";
+import { handlPage } from "~/constant/GlobalFunc";
 const MoviesP = styled.div`
   flex: 1;
   background: ${(props) => props.theme.color.mainColor};
@@ -101,13 +103,17 @@ const MoviesP = styled.div`
   }
 `;
 const MoviesPage = () => {
+  const { pageIndex, handleNextPage, handlePrevPage, handleItemPaging } =
+    handlPage();
+  console.log("pageIndex", pageIndex);
   const dispatch = useDispatch();
   const movies = useSelector((state) => state.movies);
   console.log(movies);
+  const totalPage = movies.total_page;
   useEffect(() => {
-    dispatch(getMoviesSearch({ query: "batman" }));
+    dispatch(getMoviesSearch({ query: movies.querySearch, page: pageIndex }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [pageIndex]);
   const handleQuerySearch = (e) => {
     dispatch(setQuerySearch({ query: e.target.value }));
   };
@@ -130,32 +136,9 @@ const MoviesPage = () => {
           <div className="movies-page__movies">
             {movies.movies_Search.length === 0 && (
               <>
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
-                <CartLoadingSkeleton />
+                {new Array(20).fill().map((item, index) => {
+                  return <CartLoadingSkeleton key={index} />;
+                })}
               </>
             )}
             {movies.movies_Search.length > 0 &&
@@ -170,6 +153,15 @@ const MoviesPage = () => {
             movies.movies_Search.map((item) => {
               return <MoviesCard key={item.id} data={item} />;
             })}
+        </div>
+        <div style={{ padding: "50px 0px" }}>
+          <Paging
+            pageIndex={pageIndex}
+            total_page={totalPage}
+            handleNextPage={handleNextPage}
+            handlePrevPage={handlePrevPage}
+            handleItemPaging={handleItemPaging}
+          />
         </div>
       </div>
     </MoviesP>

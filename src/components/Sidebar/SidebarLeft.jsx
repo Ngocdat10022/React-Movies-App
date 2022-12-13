@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Cricle } from "~/components/cricle";
 import { Heading } from "~/components/Heading";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   LIST_NAV_ONE,
   LIST_LIBARY,
@@ -83,10 +83,10 @@ const SidebarLeft = (props) => {
           {LIST_NAV_ONE.length > 0 &&
             LIST_NAV_ONE.map((item, index) => {
               return (
-                <Link to={item.to} key={item.id} className={`nav_link `}>
+                <NavLink to={item.to} key={item.id} className={`nav_link `}>
                   <span>{item.icon}</span>
                   <li>{item.name}</li>
-                </Link>
+                </NavLink>
               );
             })}
         </ul>
