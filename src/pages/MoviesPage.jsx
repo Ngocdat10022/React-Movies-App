@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Header } from "~/components/Header";
 import { SearchIcon } from "~/assets/icons";
 import { MoviesCard } from "~/movies";
 import { useDispatch, useSelector } from "react-redux";
 import { getMoviesSearch, setQuerySearch } from "~/Store/movies/movies-silce";
-import { debounce } from "lodash";
 import { CartLoadingSkeleton } from "~/movies/MoviesCard";
 import { Paging } from "~/components/Paging";
-import { handlPage } from "~/constant/GlobalFunc";
+import { handlPage } from "~/constant/globalFunc";
 const MoviesP = styled.div`
   flex: 1;
   background: ${(props) => props.theme.color.mainColor};
@@ -154,15 +153,18 @@ const MoviesPage = () => {
               return <MoviesCard key={item.id} data={item} />;
             })}
         </div>
-        <div style={{ padding: "50px 0px" }}>
-          <Paging
-            pageIndex={pageIndex}
-            total_page={totalPage}
-            handleNextPage={handleNextPage}
-            handlePrevPage={handlePrevPage}
-            handleItemPaging={handleItemPaging}
-          />
-        </div>
+
+        {!!movies.movies_Search && (
+          <div style={{ padding: "50px 0px" }}>
+            <Paging
+              pageIndex={pageIndex}
+              total_page={totalPage}
+              handleNextPage={handleNextPage}
+              handlePrevPage={handlePrevPage}
+              handleItemPaging={handleItemPaging}
+            />
+          </div>
+        )}
       </div>
     </MoviesP>
   );

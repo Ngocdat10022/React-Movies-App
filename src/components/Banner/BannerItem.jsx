@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "../Button";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import tmdbMovies from "~/constant/tmdbMovies";
 const Item = styled.div`
   .banner__img {
     img {
@@ -56,10 +57,7 @@ const BannerItem = ({ data }) => {
   return (
     <Item>
       <div className="banner__img">
-        <img
-          src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
-          alt="slide"
-        />
+        <img src={`${tmdbMovies.Image500(data?.poster_path)}`} alt="slide" />
       </div>
       <div className="banner__content">
         <h3 className="banner__heading">{data?.title}</h3>

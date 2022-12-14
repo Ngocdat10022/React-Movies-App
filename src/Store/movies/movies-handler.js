@@ -85,20 +85,29 @@ function* handleGetMoviesDetails(action) {
 }
 function* handleGetMoviesCredits(action) {
   const { payload } = action;
-  const res = yield call(requestMoviesCredits, payload.id);
+  const res = yield call(requestMoviesCredits, {
+    type: payload.type,
+    id: payload.id,
+  });
   const dataCredits = res.data.cast;
   yield put(getMoviesCreditsSuccess({ data: dataCredits }));
 }
 
 function* handleGetMoviesTrailer(action) {
   const { payload } = action;
-  const res = yield call(requestMoviesTrailer, payload.id);
+  const res = yield call(requestMoviesTrailer, {
+    type: payload.type,
+    id: payload.id,
+  });
   const dataTrailer = res.data.results;
   yield put(getMoviesTrailerSuccess({ data: dataTrailer }));
 }
 function* handleGetMoviesSimilar(action) {
   const { payload } = action;
-  const res = yield call(requestMoviesSimilar, payload.id);
+  const res = yield call(requestMoviesSimilar, {
+    type: payload.type,
+    id: payload.id,
+  });
   console.log(res);
   const dataSimilar = res.data.results;
   yield put(getMoviesSimilarSuccess({ data: dataSimilar }));

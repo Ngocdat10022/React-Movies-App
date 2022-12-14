@@ -6,7 +6,7 @@ export const setIndex = () => {
 
   const handleSetIndex = (lengthData) => {
     setIndex((prev) => prev + 2);
-    if (lengthData === 20) setIndex(3);
+    if (lengthData === 20) return;
   };
   return {
     index,

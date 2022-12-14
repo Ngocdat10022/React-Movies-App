@@ -6,7 +6,7 @@ import "swiper/css";
 import MoviesCard, { CartLoadingSkeleton } from "~/movies/MoviesCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getMoviesNowPlaying } from "~/Store/movies/movies-silce";
-import { handlPage } from "~/constant/GlobalFunc";
+import { handlPage } from "~/constant/globalFunc";
 const MoiesListWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getMoviesDetails } from "~/Store/movies/movies-silce";
 import { MoviesSimilar } from "~/movies/movies-similar";
+import tmdbMovies from "~/constant/tmdbMovies";
 const DetailsPage = styled.div`
   padding: 0 20px;
   flex: 1;
@@ -100,13 +101,17 @@ const MoviesDetailPage = (props) => {
             <div className="overlay"></div>
             <img
               className="banner-item"
-              src={`https://image.tmdb.org/t/p/w500/${movies?.movies_Details?.backdrop_path}`}
+              src={`${tmdbMovies.Image500(
+                movies?.movies_Details?.backdrop_path
+              )}`}
               alt="banner"
             />
           </div>
           <div className="banner-child">
             <img
-              src={`https://image.tmdb.org/t/p/w500/${movies?.movies_Details?.poster_path}`}
+              src={`${tmdbMovies.Image500(
+                movies?.movies_Details?.poster_path
+              )}`}
               alt="banner"
             />
           </div>

@@ -32,7 +32,7 @@ const MoviesCredits = () => {
   const dispatch = useDispatch();
   const movies = useSelector((state) => state.movies);
   useEffect(() => {
-    dispatch(getMoviesCredits({ id: moviesId.id }));
+    dispatch(getMoviesCredits({ type: "credits", id: moviesId.id }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const data = movies.movies_Credits;

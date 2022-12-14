@@ -13,7 +13,8 @@ import {
   getMoviesTopRated,
 } from "~/Store/movies/movies-silce";
 import { useNavigate } from "react-router-dom";
-import { setIndex } from "~/constant/GlobalFunc";
+import { setIndex } from "~/constant/globalFunc";
+import tmdbMovies from "~/constant/tmdbMovies";
 const WrappersidebarRight = styled.div`
   background-color: ${(props) => props.theme.color.sidebarColor};
   width: ${(props) => props.theme.width.sideBarright};
@@ -167,7 +168,7 @@ const SidebarRight = (props) => {
                 >
                   <div className="card__img">
                     <img
-                      src={`https://image.tmdb.org/t/p/w500/${item?.poster_path}`}
+                      src={`${tmdbMovies.Image500(item?.poster_path)}`}
                       alt="spiderman"
                     />
                   </div>

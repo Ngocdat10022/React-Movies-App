@@ -15,7 +15,7 @@ const MoviesTrailer = () => {
   const dispatch = useDispatch();
   const movies = useSelector((state) => state.movies);
   useEffect(() => {
-    dispatch(getMoviesTrailer({ id: moviesId.id }));
+    dispatch(getMoviesTrailer({ type: "videos", id: moviesId.id }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const new_data = movies.video_Trailer.slice(0, 1);

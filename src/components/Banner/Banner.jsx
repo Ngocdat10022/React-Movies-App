@@ -56,9 +56,7 @@ const WapperBaner = styled.div`
 const Banner = ({ type }) => {
   const dispath = useDispatch();
   const movies = useSelector((state) => state.movies);
-  console.log("movies", movies);
   useEffect(() => {
-    console.log("dispath success");
     dispath(getMovies({ type: type }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -71,29 +69,6 @@ const Banner = ({ type }) => {
             return (
               <SwiperSlide key={item.id}>
                 <WapperBaner>
-                  {/* <div className="banner__img">
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
-                      alt="slide"
-                    />
-                  </div>
-                  <div className="banner__content">
-                    <h3 className="banner__heading">{item.title}</h3>
-                    <div className="banner__tag">
-                      <span>Action</span>
-                      <span>Acventure</span>
-                      <span>Drama</span>
-                    </div>
-                    <div className="banner__btn">
-                      <Button
-                        width="200px"
-                        children="Watch"
-                        isBold={true}
-                        onClick={() => {}}
-                      />
-                      <Plus height="40px" width="40px" />
-                    </div>
-                  </div> */}
                   <BannerItem data={item} />
                 </WapperBaner>
               </SwiperSlide>

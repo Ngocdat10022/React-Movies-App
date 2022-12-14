@@ -6,6 +6,7 @@ import LoadingSkeleton from "~/components/SkeletonLoading/LoadingSkeleton";
 import { Button } from "../components/Button";
 import { Plus } from "../components/Plus";
 import { TitleCard } from "../components/TitleCard";
+import tmdbMovies from "~/constant/tmdbMovies";
 const MoviesCardWarapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -66,13 +67,10 @@ const MoviesCard = ({ data }) => {
   return (
     <MoviesCardWarapper>
       <div className="card__img">
-        <img
-          src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
-          alt="kkjh"
-        />
+        <img src={`${tmdbMovies.Image500(data?.poster_path)}`} alt="kkjh" />
         <img
           className="img-blur"
-          src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
+          src={`${tmdbMovies.Image500(data?.poster_path)}`}
           alt="kkjh"
         />
       </div>

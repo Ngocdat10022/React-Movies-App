@@ -29,6 +29,10 @@ export const GlobalClasses = css`
     &::-webkit-scrollbar-button {
       background: ${(props) => props.theme.color.sidebarColor};
     }
+    &::selection {
+      background: ${(props) => props.theme.color.primary};
+      color: ${(props) => props.theme.color.white};
+    }
   }
 
   ul li {

@@ -18,7 +18,7 @@ const MoviesSimilar = ({ type }) => {
   console.log("movies", movies);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getMoviesSimilar({ id: moviesId.id }));
+    dispatch(getMoviesSimilar({ type: "similar", id: moviesId.id }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
