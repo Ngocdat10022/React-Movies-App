@@ -10,11 +10,12 @@ import IconeysToogle from "~/components/icons/IconeysToogle";
 import useToogleValue from "~/hooks/useToogleValue";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authLogin } from "~/Store/auth/auth-slice";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 const Login = styled.div`
   width: 100%;
   height: 100vh;
@@ -131,8 +132,14 @@ const LoginPage = (props) => {
   const handleLogin = (values) => {
     dispatch(authLogin({ ...values }));
   };
+  const naviagte = useNavigate();
   const { user } = useSelector((state) => state.auth);
   console.log(user);
+  useEffect(() => {
+    if (user || user?.email) {
+      naviagte("/");
+    }
+  });
   return (
     <Login>
       <div className="overlay"></div>

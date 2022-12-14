@@ -10,6 +10,9 @@ import {
   LIST_GENNERAL,
 } from "~/constant/data";
 import { TitleSidebar } from "~/components/TitleSidebar";
+import { logout } from "~/utils/auth";
+import { useDispatch } from "react-redux";
+import { authLogout } from "~/Store/auth/auth-slice";
 const WrappersidebarLeft = styled.div`
   width: ${(props) => props.theme.width.sideBarLeft};
   height: 100vh;
@@ -66,9 +69,10 @@ const WrappersidebarLeft = styled.div`
 `;
 
 const SidebarLeft = (props) => {
-  // const pathname = useLocation();
-  // console.log(pathname);
-  // const active = listNavOne.findIndex((item) => item.to === pathname);
+  const handleLogout = () => {
+    logout();
+  };
+  const dispatch = useDispatch();
   return (
     <WrappersidebarLeft>
       <div className="cricle">
@@ -119,7 +123,17 @@ const SidebarLeft = (props) => {
           {LIST_GENNERAL.length > 0 &&
             LIST_GENNERAL.map((item, index) => {
               return (
-                <Link to={item.to} key={item.id} className={`nav_link `}>
+                <Link
+                  onClick={() => {
+                    if (item.id === 1) {
+                      console.log("logout Success");
+                      dispatch(authLogout());
+                    }
+                  }}
+                  to={item.to}
+                  key={item.id}
+                  className={`nav_link `}
+                >
                   <span>{item.icon}</span>
                   <li>{item.name}</li>
                 </Link>

@@ -6,6 +6,7 @@ import { Banner } from "~/components/Banner";
 import { Heading } from "~/components/Heading";
 import { MoviesNowPlaying } from "~/movies/movies-nowplaying";
 import { MoviesTopRated } from "~/movies/movies-top-rated";
+import { useNavigate } from "react-router-dom";
 // import { getToken } from "~/Utils/auth";
 // import { authRefreshToken, authUpdateUser } from "~/Store/auth/auth-slice";
 const Main = styled.div`
@@ -18,14 +19,16 @@ const Main = styled.div`
 const Home = (props) => {
   const user = useSelector((state) => state.auth.user);
   console.log(user);
-  // useEffect(() => {
-  //   if (!user || !user.email) {
-  //     navigate("/login");
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [user]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user || !user.email) {
+      navigate("/login");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
   return (
     <Main>
+      {/* <h1>{user?.name}</h1> */}
       <Header />
       <Banner type="upcoming" />
       {/* <Banner type="popular" /> */}

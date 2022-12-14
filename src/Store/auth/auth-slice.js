@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  user: undefined,
+  user: [],
   accessToken: null,
 };
 const authSlice = createSlice({
@@ -35,6 +35,7 @@ const authSlice = createSlice({
     authRefreshToken: (state, action) => {
       return {};
     },
+    authLogout: (state, action) => {},
   },
 });
 export const {
@@ -43,5 +44,6 @@ export const {
   authUpdateUser,
   authGetMe,
   authRefreshToken,
+  authLogout,
 } = authSlice.actions;
 export default authSlice.reducer;

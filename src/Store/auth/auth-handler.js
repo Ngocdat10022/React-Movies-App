@@ -7,7 +7,7 @@ import {
   requestAuthRefreshToken,
 } from "./auth-request";
 import "react-toastify/dist/ReactToastify.css";
-import { saveToken } from "~/utils/auth";
+import { logout, saveToken } from "~/utils/auth";
 import { authUpdateUser } from "./auth-slice";
 function* handleRequestAuthResgiter(action) {
   try {
@@ -63,9 +63,14 @@ function* handleRequestAuthRefreshToken({ payload }) {
     }
   } catch (error) {}
 }
+function* handleLogout() {
+  yield put(authUpdateUser({}));
+  logout();
+}
 export {
   handleRequestAuthResgiter,
   handleRequestAuthLogin,
   handleRequestAuthGetme,
   handleRequestAuthRefreshToken,
+  handleLogout,
 };
