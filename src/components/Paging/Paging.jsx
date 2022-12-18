@@ -53,13 +53,15 @@ const Paging = ({
 }) => {
   return (
     <PagingWrapper>
-      <span
-        onClick={() => {
-          handlePrevPage();
-        }}
-      >
-        <PrevIcon />
-      </span>
+      {!(pageIndex <= 1) && (
+        <span
+          onClick={() => {
+            handlePrevPage();
+          }}
+        >
+          <PrevIcon />
+        </span>
+      )}
       <div className="paging-wapper">
         {new Array(total_page).fill().map((item, index) => {
           return (
@@ -81,13 +83,15 @@ const Paging = ({
           );
         })}
       </div>
-      <span
-        onClick={() => {
-          handleNextPage(total_page);
-        }}
-      >
-        <NextIcon />
-      </span>
+      {total_page >= pageIndex + 1 && (
+        <span
+          onClick={() => {
+            handleNextPage(total_page);
+          }}
+        >
+          <NextIcon />
+        </span>
+      )}
     </PagingWrapper>
   );
 };

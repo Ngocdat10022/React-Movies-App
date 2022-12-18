@@ -6,14 +6,14 @@ import "swiper/css";
 import MoviesCard, { CartLoadingSkeleton } from "~/movies/MoviesCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getMoviesNowPlaying } from "~/Store/movies/movies-silce";
-import { handlPage } from "~/constant/globalFunc";
+import { usePaging } from "~/hooks/usePaging";
 const MoiesListWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 `;
 const MoviesNowPlaying = ({ type }) => {
-  const { pageIndex } = handlPage();
+  const { pageIndex } = usePaging();
   const movies = useSelector((state) => state.movies);
   console.log("loading", movies.loading);
   console.log("movies", movies);

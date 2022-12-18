@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMoviesSearch, setQuerySearch } from "~/Store/movies/movies-silce";
 import { CartLoadingSkeleton } from "~/movies/MoviesCard";
 import { Paging } from "~/components/Paging";
-import { handlPage } from "~/constant/globalFunc";
+import { usePaging } from "~/hooks/usePaging";
 const MoviesP = styled.div`
   flex: 1;
   background: ${(props) => props.theme.color.mainColor};
@@ -103,7 +103,7 @@ const MoviesP = styled.div`
 `;
 const MoviesPage = () => {
   const { pageIndex, handleNextPage, handlePrevPage, handleItemPaging } =
-    handlPage();
+    usePaging();
   console.log("pageIndex", pageIndex);
   const dispatch = useDispatch();
   const movies = useSelector((state) => state.movies);
