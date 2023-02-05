@@ -4,7 +4,7 @@ import { LoginPage, ResgiterPage } from "~/pages";
 const HomePage = lazy(() => import("~/pages/HomePage"));
 const MoviesDetailPage = lazy(() => import("~/pages/MoviesDetailPage"));
 const MoviesPage = lazy(() => import("~/pages/MoviesPage"));
-const Layout = lazy(() => import("~/layouts/Layout"));
+const Layout = lazy(() => import("~/layouts"));
 const Router = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>

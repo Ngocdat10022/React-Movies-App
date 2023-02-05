@@ -34,7 +34,7 @@ const MoviesCredits = () => {
   useEffect(() => {
     dispatch(getMoviesCredits({ type: "credits", id: moviesId.id }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [moviesId.id]);
   const data = movies.movies_Credits;
   return (
     <WrapperCredits>

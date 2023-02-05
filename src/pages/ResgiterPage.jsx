@@ -1,19 +1,109 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Filed } from "../components/Filed";
-import { Label } from "../components/Label";
-import { Input } from "../components/Input";
+import Field from "../components/Field";
+import Label from "../components/Label";
+import Input from "../components/Input";
 import useToogleValue from "../hooks/useToogleValue";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import IconeysToogle from "../components/icons/IconeysToogle";
-import { Button } from "../components/Button";
-import { useDispatch } from "react-redux";
+import Button from "../components/Button";
+import { useDispatch, useSelector } from "react-redux";
 import { authResgiter } from "~/Store/auth/auth-slice";
-import { Link } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Link, useNavigate } from "react-router-dom";
+import Toast from "~/components/Toast";
+
+const schema = yup
+  .object({
+    name: yup.string().required("Nam is a required field"),
+    email: yup.string().required(),
+    password: yup
+      .string()
+      .required("password is a required field")
+      .min(8, "Password must be 8 charater")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+      ),
+  })
+  .required();
+const ResgiterPage = (props) => {
+  const { value: isOpen, handleToogleValue: handleTogglePassword } =
+    useToogleValue(false);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const dispatch = useDispatch();
+  const handleLogin = (values) => {
+    console.log(values);
+    dispatch(
+      authResgiter({
+        ...values,
+      })
+    );
+  };
+  const { user } = useSelector((state) => state.auth);
+  console.log("user", user);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) navigate("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+  return (
+    <Resgiter>
+      <div className="overlay"></div>
+      <form className="form" onSubmit={handleSubmit(handleLogin)}>
+        <div className="box">
+          <h1 className="title">Resgiter</h1>
+          <Field>
+            <Label className="lable">username</Label>
+            <Input
+              error={errors}
+              message={errors?.name?.message}
+              control={control}
+              type="text"
+              name="name"
+            ></Input>
+          </Field>
+          <Field>
+            <Label className="lable">email</Label>
+            <Input
+              error={errors}
+              message={errors?.email?.message}
+              control={control}
+              type="email"
+              name="email"
+            ></Input>
+          </Field>
+          <Field>
+            <Label className="lable">password</Label>
+            <Input
+              control={control}
+              name="password"
+              type={isOpen ? "text" : "password"}
+              error={errors}
+              message={errors?.password?.message}
+            >
+              <IconeysToogle onClick={handleTogglePassword} isOpen={isOpen} />
+            </Input>
+          </Field>
+          <div className="btn">
+            <Button isBold={true}>Resgiter</Button>
+          </div>
+          <span className="link">
+            <Link to="/login">Login</Link>
+          </span>
+        </div>
+      </form>
+      <Toast />
+    </Resgiter>
+  );
+};
 const Resgiter = styled.div`
   width: 100%;
   height: 100vh;
@@ -36,7 +126,7 @@ const Resgiter = styled.div`
     border-radius: 5px;
     background: ${(props) => props.theme.color.mainColor};
     overflow: hidden;
-    animation: height 2s linear forwards;
+    animation: height 0.5s linear forwards;
   }
   .form::before {
     content: "";
@@ -103,89 +193,4 @@ const Resgiter = styled.div`
     }
   }
 `;
-const schema = yup
-  .object({
-    name: yup.string().required("Nam is a required field"),
-    email: yup.string().required(),
-    password: yup
-      .string()
-      .required("password is a required field")
-      .min(8, "Password must be 8 charater")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-      ),
-  })
-  .required();
-const ResgiterPage = (props) => {
-  const { value: isOpen, handleToogleValue: handleTogglePassword } =
-    useToogleValue(false);
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-  const dispatch = useDispatch();
-  const handleLogin = (values) => {
-    console.log(values);
-    dispatch(
-      authResgiter({
-        ...values,
-      })
-    );
-  };
-
-  return (
-    <Resgiter>
-      <div className="overlay"></div>
-      <form className="form" onSubmit={handleSubmit(handleLogin)}>
-        <div className="box">
-          <h1 className="title">Resgiter</h1>
-          <Filed>
-            <Label className="lable">username</Label>
-            <Input
-              error={errors}
-              message={errors?.name?.message}
-              control={control}
-              type="text"
-              name="name"
-            ></Input>
-          </Filed>
-          <Filed>
-            <Label className="lable">email</Label>
-            <Input
-              error={errors}
-              message={errors?.email?.message}
-              control={control}
-              type="email"
-              name="email"
-            ></Input>
-          </Filed>
-          <Filed>
-            <Label className="lable">password</Label>
-            <Input
-              control={control}
-              name="password"
-              type={isOpen ? "text" : "password"}
-              error={errors}
-              message={errors?.password?.message}
-            >
-              <IconeysToogle onClick={handleTogglePassword} isOpen={isOpen} />
-            </Input>
-          </Filed>
-          <div className="btn">
-            <Button isBold={true}>Resgiter</Button>
-          </div>
-          <span className="link">
-            <Link to="/login">Login</Link>
-          </span>
-        </div>
-      </form>
-      <ToastContainer />
-    </Resgiter>
-  );
-};
-
 export default ResgiterPage;

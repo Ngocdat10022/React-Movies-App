@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { Header } from "~/components/Header";
+import Header from "~/components/Header";
 import { Banner } from "~/components/Banner";
-import { Heading } from "~/components/Heading";
-import { MoviesNowPlaying } from "~/movies/movies-nowplaying";
-import { MoviesTopRated } from "~/movies/movies-top-rated";
+import Heading from "~/components/Heading";
+import MoviesNowPlaying from "~/movies/movies-nowplaying";
+import MoviesTopRated from "~/movies/movies-top-rated";
 import { useNavigate } from "react-router-dom";
+import Toast from "~/components/Toast";
 // import { getToken } from "~/Utils/auth";
 // import { authRefreshToken, authUpdateUser } from "~/Store/auth/auth-slice";
 const Main = styled.div`
@@ -23,6 +24,9 @@ const Home = (props) => {
   useEffect(() => {
     if (!user || !user.email) {
       navigate("/login");
+      // alert("Đăng nhập thất bại");
+    } else {
+      // alert("Đăng nhập thành công");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -36,6 +40,7 @@ const Home = (props) => {
       <MoviesNowPlaying type="now_playing" />
       <Heading name="Top Rated Movies" />
       <MoviesTopRated type="top_rated" />
+      <Toast />
     </Main>
   );
 };

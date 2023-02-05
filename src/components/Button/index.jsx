@@ -1,6 +1,37 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+const Button = ({
+  type,
+  children,
+  width,
+  height,
+  loading = false,
+  isBold,
+  onClick = () => {},
+}) => {
+  const child = loading ? <div className="arc"></div> : children;
+  return (
+    <WrapperButton
+      isBold={isBold}
+      onClick={onClick}
+      type={type}
+      width={width}
+      height={height}
+    >
+      {child}
+    </WrapperButton>
+  );
+};
+
+Button.propTypes = {
+  children: PropTypes.string,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  loading: PropTypes.bool,
+  type: PropTypes.string,
+  isBold: PropTypes.bool,
+};
 const WrapperButton = styled.button`
   border-radius: 5px;
   width: ${(props) => (props.width ? `${props.width}` : `100%`)};
@@ -35,35 +66,4 @@ const WrapperButton = styled.button`
     }
   }
 `;
-const Button = ({
-  type,
-  children,
-  width,
-  height,
-  loading = false,
-  isBold,
-  onClick = () => {},
-}) => {
-  const child = loading ? <div className="arc"></div> : children;
-  return (
-    <WrapperButton
-      isBold={isBold}
-      onClick={onClick}
-      type={type}
-      width={width}
-      height={height}
-    >
-      {child}
-    </WrapperButton>
-  );
-};
-
-Button.propTypes = {
-  children: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string,
-  loading: PropTypes.bool,
-  type: PropTypes.string,
-  isBold: PropTypes.bool,
-};
 export default Button;

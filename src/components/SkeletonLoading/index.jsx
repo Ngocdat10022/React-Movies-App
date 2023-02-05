@@ -1,5 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+
+const LoadingSkeleton = (props) => {
+  return (
+    <Skeleton
+      style={{
+        height: props.height,
+        width: props.width || "100%",
+        borderRadius: props.radius,
+      }}
+    ></Skeleton>
+  );
+};
 const Skeleton = styled.div`
   background-color: #eee;
   background-image: linear-gradient(
@@ -17,16 +29,4 @@ const Skeleton = styled.div`
     }
   }
 `;
-const LoadingSkeleton = (props) => {
-  return (
-    <Skeleton
-      style={{
-        height: props.height,
-        width: props.width || "100%",
-        borderRadius: props.radius,
-      }}
-    ></Skeleton>
-  );
-};
-
 export default LoadingSkeleton;

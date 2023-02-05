@@ -1,13 +1,36 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { Button } from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { getMovies } from "~/Store/movies/movies-silce";
-import { Plus } from "../Plus";
 import BannerItem from "./BannerItem";
+const Banner = ({ type }) => {
+  const dispath = useDispatch();
+  const movies = useSelector((state) => state.movies);
+  useEffect(() => {
+    dispath(getMovies({ type: type }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (!movies.moviesList) return;
+  return (
+    <>
+      <Swiper grabCursor spaceBetween={0} slidesPerView="auto">
+        {movies.moviesList.length > 0 &&
+          movies.moviesList.map((item) => {
+            return (
+              <SwiperSlide key={item.id}>
+                <WapperBaner>
+                  <BannerItem data={item} />
+                </WapperBaner>
+              </SwiperSlide>
+            );
+          })}
+      </Swiper>
+    </>
+  );
+};
+
 const WapperBaner = styled.div`
   height: 400px;
   margin: auto;
@@ -53,30 +76,4 @@ const WapperBaner = styled.div`
     }
   }
 `;
-const Banner = ({ type }) => {
-  const dispath = useDispatch();
-  const movies = useSelector((state) => state.movies);
-  useEffect(() => {
-    dispath(getMovies({ type: type }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  if (!movies.moviesList) return;
-  return (
-    <>
-      <Swiper grabCursor spaceBetween={0} slidesPerView="auto">
-        {movies.moviesList.length > 0 &&
-          movies.moviesList.map((item) => {
-            return (
-              <SwiperSlide key={item.id}>
-                <WapperBaner>
-                  <BannerItem data={item} />
-                </WapperBaner>
-              </SwiperSlide>
-            );
-          })}
-      </Swiper>
-    </>
-  );
-};
-
 export default Banner;

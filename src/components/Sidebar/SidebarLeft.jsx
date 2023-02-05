@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Cricle } from "~/components/cricle";
-import { Heading } from "~/components/Heading";
+import Cricle from "~/components/cricle";
+import Heading from "~/components/Heading";
 import { Link, NavLink } from "react-router-dom";
 import {
   LIST_NAV_ONE,
@@ -9,69 +9,11 @@ import {
   LIST_CATEGORY,
   LIST_GENNERAL,
 } from "~/constant/data";
-import { TitleSidebar } from "~/components/TitleSidebar";
-import { logout } from "~/utils/auth";
+import TitleSidebar from "~/components/Sidebar/TitleSidebar";
 import { useDispatch } from "react-redux";
 import { authLogout } from "~/Store/auth/auth-slice";
-const WrappersidebarLeft = styled.div`
-  width: ${(props) => props.theme.width.sideBarLeft};
-  height: 100vh;
-  background-color: ${(props) => props.theme.color.sidebarColor};
-  position: fixed;
-  z-index: 100;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  padding: 20px 0px 40px 20px;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  &::-webkit-scrollbar-track {
-    background: ${(props) => props.theme.color.sidebarColor};
-  }
-  &::-webkit-scrollbar-thumb {
-    background: ${(props) => props.theme.color.sidebarColor};
-    border-radius: 5px;
-  }
-  &::-webkit-scrollbar-button {
-    background: ${(props) => props.theme.color.sidebarColor};
-  }
-  .cricle {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 30px;
-  }
-  .nav {
-    margin-top: 70px;
-    &_list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin: 20px 0px 0px 10px;
-    }
-    &_link {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: bold;
-      color: ${(props) => props.theme.color.white};
-      &.active {
-        color: ${(props) => props.theme.color.primary};
-      }
-    }
-  }
-  .width {
-    width: 20px;
-  }
-`;
 
 const SidebarLeft = (props) => {
-  const handleLogout = () => {
-    logout();
-  };
   const dispatch = useDispatch();
   return (
     <WrappersidebarLeft>
@@ -144,4 +86,58 @@ const SidebarLeft = (props) => {
     </WrappersidebarLeft>
   );
 };
+const WrappersidebarLeft = styled.div`
+  width: ${(props) => props.theme.width.sideBarLeft};
+  height: 100vh;
+  background-color: ${(props) => props.theme.color.sidebarColor};
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding: 20px 0px 40px 20px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: ${(props) => props.theme.color.sidebarColor};
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${(props) => props.theme.color.sidebarColor};
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-button {
+    background: ${(props) => props.theme.color.sidebarColor};
+  }
+  .cricle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 30px;
+  }
+  .nav {
+    margin-top: 70px;
+    &_list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin: 20px 0px 0px 10px;
+    }
+    &_link {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      color: ${(props) => props.theme.color.white};
+      &.active {
+        color: ${(props) => props.theme.color.primary};
+      }
+    }
+  }
+  .width {
+    width: 20px;
+  }
+`;
 export default SidebarLeft;

@@ -1,8 +1,53 @@
 import React from "react";
-import { Button } from "../Button";
+import Button from "~/components/Button";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import tmdbMovies from "~/constant/tmdbMovies";
+import tmdbMovies from "~/constant/apiGetMovies";
+
+const BannerItem = ({ data }) => {
+  const { id } = data;
+  const navigate = useNavigate();
+  return (
+    <Item>
+      <div className="banner__img">
+        <img src={`${tmdbMovies.Image500(data?.poster_path)}`} alt="slide" />
+      </div>
+      <div className="banner__content">
+        <h3 className="banner__heading">{data?.title}</h3>
+        <div className="banner__tag">
+          <span>Action</span>
+          <span>Acventure</span>
+          <span>Drama</span>
+        </div>
+        <div className="banner__btn">
+          <Button
+            width="200px"
+            children="Watch"
+            isBold={true}
+            onClick={() => {
+              navigate(`movies-details/${id}`);
+            }}
+          />
+          <div className="banner__plus">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                fillRule="evenodd"
+                d="M12 5.25a.75.75 0 01.75.75v5.25H18a.75.75 0 010 1.5h-5.25V18a.75.75 0 01-1.5 0v-5.25H6a.75.75 0 010-1.5h5.25V6a.75.75 0 01.75-.75z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </Item>
+  );
+};
+
 const Item = styled.div`
   .banner__img {
     img {
@@ -51,48 +96,4 @@ const Item = styled.div`
     }
   }
 `;
-const BannerItem = ({ data }) => {
-  const { id } = data;
-  const navigate = useNavigate();
-  return (
-    <Item>
-      <div className="banner__img">
-        <img src={`${tmdbMovies.Image500(data?.poster_path)}`} alt="slide" />
-      </div>
-      <div className="banner__content">
-        <h3 className="banner__heading">{data?.title}</h3>
-        <div className="banner__tag">
-          <span>Action</span>
-          <span>Acventure</span>
-          <span>Drama</span>
-        </div>
-        <div className="banner__btn">
-          <Button
-            width="200px"
-            children="Watch"
-            isBold={true}
-            onClick={() => {
-              navigate(`movies-details/${id}`);
-            }}
-          />
-          <div className="banner__plus">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12 5.25a.75.75 0 01.75.75v5.25H18a.75.75 0 010 1.5h-5.25V18a.75.75 0 01-1.5 0v-5.25H6a.75.75 0 010-1.5h5.25V6a.75.75 0 01.75-.75z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-    </Item>
-  );
-};
-
 export default BannerItem;

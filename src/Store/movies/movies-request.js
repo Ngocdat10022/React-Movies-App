@@ -1,5 +1,5 @@
 import axios from "axios";
-import tmdbMovies from "~/constant/tmdbMovies";
+import tmdbMovies from "~/constant/apiGetMovies";
 export const requestMovies = ({ type, page = 1 }) => {
   return axios.get(tmdbMovies.getMoviesList(type, page));
 };

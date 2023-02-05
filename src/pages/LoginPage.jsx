@@ -1,10 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Filed } from "~/components/Filed";
-import { Label } from "~/components/Label";
-import { Input } from "~/components/Input";
-import { Button } from "~/components/Button";
+import Field from "~/components/Field";
+import Label from "~/components/Label";
+import Input from "~/components/Input";
+import Button from "~/components/Button";
 import { useForm } from "react-hook-form";
 import IconeysToogle from "~/components/icons/IconeysToogle";
 import useToogleValue from "~/hooks/useToogleValue";
@@ -13,9 +12,84 @@ import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authLogin } from "~/Store/auth/auth-slice";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
+import Toast from "~/components/Toast";
+const schema = yup
+  .object({
+    email: yup.string().required(),
+    password: yup
+      .string()
+      .required("password is a required field")
+      .min(8, "Password must be 8 charater")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+      ),
+  })
+  .required();
+const LoginPage = (props) => {
+  const { value: isOpen, handleToogleValue: handleTogglePassword } =
+    useToogleValue(false);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const dispatch = useDispatch();
+  const handleLogin = (values) => {
+    dispatch(authLogin({ ...values }));
+  };
+  const naviagte = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
+  useEffect(() => {
+    if (user || user?.email) {
+      naviagte("/");
+    }
+  });
+  return (
+    <Login>
+      <div className="overlay"></div>
+      <form className="form" onSubmit={handleSubmit(handleLogin)}>
+        <div className="box">
+          <h1 className="title">Login</h1>
+          <Field>
+            <Label className="lable">email</Label>
+            <Input
+              error={errors}
+              message={errors?.email?.message}
+              control={control}
+              type="email"
+              name="email"
+            ></Input>
+          </Field>
+          <Field>
+            <Label className="lable">password</Label>
+            <Input
+              control={control}
+              name="password"
+              type={isOpen ? "text" : "password"}
+              error={errors}
+              message={errors?.password?.message}
+            >
+              <IconeysToogle onClick={handleTogglePassword} isOpen={isOpen} />
+            </Input>
+          </Field>
+          <div className="btn">
+            <Button isBold={true}>Login</Button>
+          </div>
+          <span className="link">
+            <Link to="/register">Register</Link>
+          </span>
+        </div>
+      </form>
+      <Toast />
+    </Login>
+  );
+};
+LoginPage.propTypes = {};
 const Login = styled.div`
   width: 100%;
   height: 100vh;
@@ -105,81 +179,4 @@ const Login = styled.div`
     }
   }
 `;
-const schema = yup
-  .object({
-    email: yup.string().required(),
-    password: yup
-      .string()
-      .required("password is a required field")
-      .min(8, "Password must be 8 charater")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-      ),
-  })
-  .required();
-const LoginPage = (props) => {
-  const { value: isOpen, handleToogleValue: handleTogglePassword } =
-    useToogleValue(false);
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-  const dispatch = useDispatch();
-  const handleLogin = (values) => {
-    dispatch(authLogin({ ...values }));
-  };
-  const naviagte = useNavigate();
-  const { user } = useSelector((state) => state.auth);
-  console.log(user);
-  useEffect(() => {
-    if (user || user?.email) {
-      naviagte("/");
-    }
-  });
-  return (
-    <Login>
-      <div className="overlay"></div>
-      <form className="form" onSubmit={handleSubmit(handleLogin)}>
-        <div className="box">
-          <h1 className="title">Login</h1>
-          <Filed>
-            <Label className="lable">email</Label>
-            <Input
-              error={errors}
-              message={errors?.email?.message}
-              control={control}
-              type="email"
-              name="email"
-            ></Input>
-          </Filed>
-          <Filed>
-            <Label className="lable">password</Label>
-            <Input
-              control={control}
-              name="password"
-              type={isOpen ? "text" : "password"}
-              error={errors}
-              message={errors?.password?.message}
-            >
-              <IconeysToogle onClick={handleTogglePassword} isOpen={isOpen} />
-            </Input>
-          </Filed>
-          <div className="btn">
-            <Button isBold={true}>Login</Button>
-          </div>
-          <span className="link">
-            <Link to="/register">Register</Link>
-          </span>
-        </div>
-      </form>
-      <ToastContainer />
-    </Login>
-  );
-};
-LoginPage.propTypes = {};
-
 export default LoginPage;

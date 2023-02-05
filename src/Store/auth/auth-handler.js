@@ -6,9 +6,9 @@ import {
   requestAuthGetme,
   requestAuthRefreshToken,
 } from "./auth-request";
-import "react-toastify/dist/ReactToastify.css";
 import { logout, saveToken } from "~/utils/auth";
 import { authUpdateUser } from "./auth-slice";
+import Swal from "sweetalert2";
 function* handleRequestAuthResgiter(action) {
   try {
     const { payload } = action;
@@ -44,9 +44,20 @@ function* handleRequestAuthLogin(action) {
   try {
     const { payload } = action;
     const res = yield call(requestAuthLogin, payload);
-    if (res.data.accessToken && res.data.refreshToken) {
-      saveToken(res.data.accessToken, res.data.refreshToken);
-      yield call(handleRequestAuthGetme, { payload: res.data.accessToken });
+    console.log("dataLOgin", res);
+    if (res.status === 200) {
+      // alert("login successFully");
+      toast.success("Register Successfully", {
+        position: "top-right",
+      });
+      if (res.data.accessToken && res.data.refreshToken) {
+        saveToken(res.data.accessToken, res.data.refreshToken);
+        yield call(handleRequestAuthGetme, { payload: res.data.accessToken });
+      }
+    } else if (res.status === 401) {
+      toast.error("login failed", {
+        position: "top-right",
+      });
     }
   } catch (error) {
     console.log(error);
@@ -55,6 +66,7 @@ function* handleRequestAuthLogin(action) {
 function* handleRequestAuthRefreshToken({ payload }) {
   try {
     const res = yield call(requestAuthRefreshToken, payload);
+
     if (res.data) {
       saveToken(res.data.accessToken, res.data.refreshToken);
       yield handleRequestAuthGetme({
@@ -66,6 +78,19 @@ function* handleRequestAuthRefreshToken({ payload }) {
 function* handleLogout() {
   yield put(authUpdateUser({}));
   logout();
+
+  // Swal.fire({
+  //   title: "you can Logout?",
+  //   text: "You won't be able to revert this!",
+  //   icon: "question",
+  //   showCancelButton: true,
+  //   confirmButtonColor: "#3085d6",
+  //   cancelButtonColor: "#d33",
+  //   confirmButtonText: "ok",
+  // }).then((result) => {
+  //   if (result.isConfirmed) {
+  //   }
+  // });
 }
 export {
   handleRequestAuthResgiter,

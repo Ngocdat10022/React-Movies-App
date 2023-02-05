@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+const Tag = ({ children }) => {
+  return <WrapperTag>{children}</WrapperTag>;
+};
 const WrapperTag = styled.span`
   background: transparent;
   border: 1px solid #ccc;
@@ -8,8 +11,5 @@ const WrapperTag = styled.span`
   font-size: 8px;
   color: ${(props) => props.theme.color.white};
 `;
-const Tag = ({ children }) => {
-  return <WrapperTag>{children}</WrapperTag>;
-};
 
 export default Tag;

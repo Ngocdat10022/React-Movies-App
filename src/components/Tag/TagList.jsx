@@ -1,10 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Tag from "./Tag";
-const ListTag = styled.div`
-  display: flex;
-  gap: 5px;
-`;
 const TagList = () => {
   return (
     <ListTag>
@@ -14,5 +10,9 @@ const TagList = () => {
     </ListTag>
   );
 };
+const ListTag = styled.div`
+  display: flex;
+  gap: 5px;
+`;
 
 export default TagList;

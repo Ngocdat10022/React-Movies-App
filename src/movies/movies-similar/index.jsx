@@ -20,7 +20,7 @@ const MoviesSimilar = ({ type }) => {
   useEffect(() => {
     dispatch(getMoviesSimilar({ type: "similar", id: moviesId.id }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [moviesId.id]);
 
   return (
     <MoiesListWrapper>

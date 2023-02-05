@@ -2,11 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { StarIcon } from "~/assets/icons";
-import LoadingSkeleton from "~/components/SkeletonLoading/LoadingSkeleton";
-import { Button } from "../components/Button";
-import { Plus } from "../components/Plus";
-import { TitleCard } from "../components/TitleCard";
-import tmdbMovies from "~/constant/tmdbMovies";
+import LoadingSkeleton from "~/components/SkeletonLoading";
+import Button from "../components/Button";
+import Plus from "../components/Plus";
+import TitleCard from "../components/TitleCard";
+import tmdbMovies from "~/constant/apiGetMovies";
 const MoviesCardWarapper = styled.div`
   display: flex;
   flex-direction: column;

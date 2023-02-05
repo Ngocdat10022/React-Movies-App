@@ -1,13 +1,82 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Header } from "~/components/Header";
+import Header from "~/components/Header";
 import { SearchIcon } from "~/assets/icons";
 import { MoviesCard } from "~/movies";
 import { useDispatch, useSelector } from "react-redux";
 import { getMoviesSearch, setQuerySearch } from "~/Store/movies/movies-silce";
 import { CartLoadingSkeleton } from "~/movies/MoviesCard";
-import { Paging } from "~/components/Paging";
+import Paging from "~/components/Paging";
 import { usePaging } from "~/hooks/usePaging";
+
+const MoviesPage = () => {
+  const { pageIndex, handleNextPage, handlePrevPage, handleItemPaging } =
+    usePaging();
+  console.log("pageIndex", pageIndex);
+  const dispatch = useDispatch();
+  const movies = useSelector((state) => state.movies);
+  console.log(movies);
+  const totalPage = movies.total_page;
+  useEffect(() => {
+    dispatch(getMoviesSearch({ query: movies.querySearch, page: pageIndex }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageIndex]);
+  const handleQuerySearch = (e) => {
+    dispatch(setQuerySearch({ query: e.target.value }));
+  };
+  return (
+    <MoviesP>
+      <Header />
+      <div className="movies-page">
+        <div className="movies-page__search">
+          <input placeholder="Search" onChange={handleQuerySearch} />
+          <div
+            className="btn-search"
+            onClick={() => {
+              dispatch(getMoviesSearch({ query: movies.querySearch }));
+            }}
+          >
+            <SearchIcon className="width" />
+          </div>
+        </div>
+        {movies.loading && (
+          <div className="movies-page__movies">
+            {movies.movies_Search.length === 0 && (
+              <>
+                {new Array(20).fill().map((item, index) => {
+                  return <CartLoadingSkeleton key={index} />;
+                })}
+              </>
+            )}
+            {movies.movies_Search.length > 0 &&
+              movies.movies_Search.map((item) => {
+                return <CartLoadingSkeleton key={item.id} />;
+              })}
+          </div>
+        )}
+        <div className="movies-page__movies">
+          {!movies.loading &&
+            movies.movies_Search.length > 0 &&
+            movies.movies_Search.map((item) => {
+              return <MoviesCard key={item.id} data={item} />;
+            })}
+        </div>
+
+        {!!movies.movies_Search && (
+          <div style={{ padding: "50px 0px" }}>
+            <Paging
+              pageIndex={pageIndex}
+              total_page={totalPage}
+              handleNextPage={handleNextPage}
+              handlePrevPage={handlePrevPage}
+              handleItemPaging={handleItemPaging}
+            />
+          </div>
+        )}
+      </div>
+    </MoviesP>
+  );
+};
 const MoviesP = styled.div`
   flex: 1;
   background: ${(props) => props.theme.color.mainColor};
@@ -101,72 +170,4 @@ const MoviesP = styled.div`
     }
   }
 `;
-const MoviesPage = () => {
-  const { pageIndex, handleNextPage, handlePrevPage, handleItemPaging } =
-    usePaging();
-  console.log("pageIndex", pageIndex);
-  const dispatch = useDispatch();
-  const movies = useSelector((state) => state.movies);
-  console.log(movies);
-  const totalPage = movies.total_page;
-  useEffect(() => {
-    dispatch(getMoviesSearch({ query: movies.querySearch, page: pageIndex }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageIndex]);
-  const handleQuerySearch = (e) => {
-    dispatch(setQuerySearch({ query: e.target.value }));
-  };
-  return (
-    <MoviesP>
-      <Header />
-      <div className="movies-page">
-        <div className="movies-page__search">
-          <input placeholder="Search" onChange={handleQuerySearch} />
-          <div
-            className="btn-search"
-            onClick={() => {
-              dispatch(getMoviesSearch({ query: movies.querySearch }));
-            }}
-          >
-            <SearchIcon className="width" />
-          </div>
-        </div>
-        {movies.loading && (
-          <div className="movies-page__movies">
-            {movies.movies_Search.length === 0 && (
-              <>
-                {new Array(20).fill().map((item, index) => {
-                  return <CartLoadingSkeleton key={index} />;
-                })}
-              </>
-            )}
-            {movies.movies_Search.length > 0 &&
-              movies.movies_Search.map((item) => {
-                return <CartLoadingSkeleton key={item.id} />;
-              })}
-          </div>
-        )}
-        <div className="movies-page__movies">
-          {!movies.loading &&
-            movies.movies_Search.length > 0 &&
-            movies.movies_Search.map((item) => {
-              return <MoviesCard key={item.id} data={item} />;
-            })}
-        </div>
-
-        {!!movies.movies_Search && (
-          <div style={{ padding: "50px 0px" }}>
-            <Paging
-              pageIndex={pageIndex}
-              total_page={totalPage}
-              handleNextPage={handleNextPage}
-              handlePrevPage={handlePrevPage}
-              handleItemPaging={handleItemPaging}
-            />
-          </div>
-        )}
-      </div>
-    </MoviesP>
-  );
-};
 export default MoviesPage;

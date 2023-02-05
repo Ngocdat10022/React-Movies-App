@@ -1,16 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-const PlusW = styled.div`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  color: ${(props) => props.theme.color.white};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(158, 158, 158, 0.7);
-  font-size: 15px;
-  border-radius: 5px;
-`;
 const Plus = ({ height, width }) => {
   return (
     <PlusW height={height} width={width}>
@@ -30,4 +19,15 @@ const Plus = ({ height, width }) => {
   );
 };
 
+const PlusW = styled.div`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  color: ${(props) => props.theme.color.white};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(158, 158, 158, 0.7);
+  font-size: 15px;
+  border-radius: 5px;
+`;
 export default Plus;

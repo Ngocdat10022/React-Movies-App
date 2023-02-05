@@ -1,16 +1,79 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Header } from "~/components/Header";
-import { MoviesCredits } from "~/movies/movies-credits";
-import MoviesTrailer from "~/movies/movies-trailer/MoviesTrailer";
-import { Heading } from "~/components/Heading";
+import Header from "~/components/Header";
+import MoviesCredits from "~/movies/movies-credits";
+import MoviesTrailer from "~/movies/movies-trailer";
+import Heading from "~/components/Heading";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getMoviesDetails } from "~/Store/movies/movies-silce";
-import { MoviesSimilar } from "~/movies/movies-similar";
-import tmdbMovies from "~/constant/tmdbMovies";
+import MoviesSimilar from "~/movies/movies-similar";
+import tmdbMovies from "~/constant/apiGetMovies";
+
+const MoviesDetailPage = (props) => {
+  const moviesId = useParams();
+  console.log(moviesId.id);
+  const dispatch = useDispatch();
+  const movies = useSelector((state) => state.movies);
+  const genres = movies?.movies_Details?.genres;
+  useEffect(() => {
+    dispatch(getMoviesDetails({ id: moviesId.id }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moviesId.id]);
+  if (!genres) return;
+  return (
+    <DetailsPage>
+      <Header />
+      <div className="movies-details">
+        <div className="movies-details__banner">
+          <div className="banner-item">
+            <div className="overlay"></div>
+            <img
+              className="banner-item"
+              src={`${tmdbMovies.Image500(
+                movies?.movies_Details?.backdrop_path
+              )}`}
+              alt="banner"
+            />
+          </div>
+          <div className="banner-child">
+            <img
+              src={`${tmdbMovies.Image500(
+                movies?.movies_Details?.poster_path
+              )}`}
+              alt="banner"
+            />
+          </div>
+        </div>
+        <div className="movies-details__title">
+          <h3>{movies?.movies_Details?.original_title} </h3>
+        </div>
+        <div className="movies-details__geners">
+          {genres.length > 0 &&
+            genres.map((item) => {
+              return (
+                <span key={item.id} className="geners-item">
+                  {item.name}
+                </span>
+              );
+            })}
+        </div>
+        <div className="movies-details__des">
+          <p>{movies?.movies_Details?.overview}</p>
+        </div>
+        <h3 className="movies-details__heading">Casts</h3>
+        <MoviesCredits />
+        <h3 className="movies-details__heading">Trailer</h3>
+        <MoviesTrailer />
+        <Heading name="Movies Similar" />
+        <MoviesSimilar />
+      </div>
+    </DetailsPage>
+  );
+};
+
+MoviesDetailPage.propTypes = {};
 const DetailsPage = styled.div`
   padding: 0 20px;
   flex: 1;
@@ -81,68 +144,4 @@ const DetailsPage = styled.div`
     }
   }
 `;
-const MoviesDetailPage = (props) => {
-  const moviesId = useParams();
-  console.log(moviesId.id);
-  const dispatch = useDispatch();
-  const movies = useSelector((state) => state.movies);
-  const genres = movies?.movies_Details?.genres;
-  useEffect(() => {
-    dispatch(getMoviesDetails({ id: moviesId.id }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  if (!genres) return;
-  return (
-    <DetailsPage>
-      <Header />
-      <div className="movies-details">
-        <div className="movies-details__banner">
-          <div className="banner-item">
-            <div className="overlay"></div>
-            <img
-              className="banner-item"
-              src={`${tmdbMovies.Image500(
-                movies?.movies_Details?.backdrop_path
-              )}`}
-              alt="banner"
-            />
-          </div>
-          <div className="banner-child">
-            <img
-              src={`${tmdbMovies.Image500(
-                movies?.movies_Details?.poster_path
-              )}`}
-              alt="banner"
-            />
-          </div>
-        </div>
-        <div className="movies-details__title">
-          <h3>{movies?.movies_Details?.original_title} </h3>
-        </div>
-        <div className="movies-details__geners">
-          {genres.length > 0 &&
-            genres.map((item) => {
-              return (
-                <span key={item.id} className="geners-item">
-                  {item.name}
-                </span>
-              );
-            })}
-        </div>
-        <div className="movies-details__des">
-          <p>{movies?.movies_Details?.overview}</p>
-        </div>
-        <h3 className="movies-details__heading">Casts</h3>
-        <MoviesCredits />
-        <h3 className="movies-details__heading">Trailer</h3>
-        <MoviesTrailer />
-        <Heading name="Movies Similar" />
-        <MoviesSimilar />
-      </div>
-    </DetailsPage>
-  );
-};
-
-MoviesDetailPage.propTypes = {};
-
 export default MoviesDetailPage;
