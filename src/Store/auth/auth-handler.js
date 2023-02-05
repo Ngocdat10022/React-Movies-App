@@ -47,7 +47,7 @@ function* handleRequestAuthLogin(action) {
     console.log("dataLOgin", res);
     if (res.status === 200) {
       // alert("login successFully");
-      toast.success("Register Successfully", {
+      toast.success("login Successfully", {
         position: "top-right",
       });
       if (res.data.accessToken && res.data.refreshToken) {
