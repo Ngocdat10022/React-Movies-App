@@ -17,11 +17,11 @@ const SidebarLeft = (props) => {
   const dispatch = useDispatch();
   return (
     <WrappersidebarLeft>
-      <div className="cricle">
+      {/* <div className="cricle">
         <Cricle bg_color="#FB5E57" />
         <Cricle bg_color="#FFBE30" />
         <Cricle bg_color="#2BC940" />
-      </div>
+      </div> */}
       <Heading name="Watch" />
       <div className="nav">
         <TitleSidebar title="Menu" />
