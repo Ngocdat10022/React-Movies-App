@@ -6,7 +6,7 @@ import GlobalStyle from "~/assets/styles/GlobalStyle";
 import { BrowserRouter } from "react-router-dom";
 import { theme } from "~/assets/styles/theme";
 import { Provider } from "react-redux";
-import { store } from "~/Store/Store";
+import { store } from "~/Store/store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={theme}>
