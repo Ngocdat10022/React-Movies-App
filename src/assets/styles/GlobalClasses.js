@@ -46,14 +46,13 @@ export const GlobalClasses = css`
   img {
     width: 100%;
   }
-  button {
-    border: none;
-    outline: none;
-    cursor: pointer;
-  }
+  button,
   input {
     border: none;
     outline: none;
+  }
+  button {
+    cursor: pointer;
   }
   .width {
     width: 20px;

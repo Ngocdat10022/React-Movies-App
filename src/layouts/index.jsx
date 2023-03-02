@@ -9,7 +9,6 @@ const Layout = () => {
       <div className="sidebar-left">
         <SidebarLeft />
       </div>
-      {/* <div className="main"></div> */}
       <Outlet></Outlet>
       <div className="sidebar-rigth">
         <SidebarRight />

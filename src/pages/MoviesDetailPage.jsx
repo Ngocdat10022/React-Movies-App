@@ -11,7 +11,7 @@ import { getMoviesDetails } from "~/Store/movies/movies-silce";
 import MoviesSimilar from "~/movies/movies-similar";
 import tmdbMovies from "~/constant/apiGetMovies";
 
-const MoviesDetailPage = (props) => {
+const MoviesDetailPage = () => {
   const moviesId = useParams();
   console.log(moviesId.id);
   const dispatch = useDispatch();
